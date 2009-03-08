@@ -12,7 +12,7 @@ module RubiGen
     end
 
     # Instatiates the Generator
-    def build_generator(name, params, sources, options)
+    def build_generator(name, params, sources, options = {})
       @stdout ||= StringIO.new
       options.merge!(:collision => :force)  # so no questions are prompted
       options.merge!(:stdout => @stdout)  # so stdout is piped to a StringIO
