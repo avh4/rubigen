@@ -295,6 +295,23 @@ module RubiGen
         end
         system("git add -v #{relative_destination}") if options[:git]
       end
+      
+      def symlink(link_target, relative_destination, options = {})
+        destination         = destination_path(relative_destination)
+        destination_exists  = File.exist?(destination)
+
+        # If source and destination are identical then we're done.
+        if destination_exists and File.readlink(destination) == link_target
+          return logger.identical(relative_destination)
+        end
+
+        logger.create relative_destination
+
+        # If we're pretending, back off now.
+        return if options[:pretend]
+        
+        FileUtils.ln_s(link_target, destination)
+      end
 
       # Checks if the source and the destination file are identical. If
       # passed a block then the source file is a template that needs to first

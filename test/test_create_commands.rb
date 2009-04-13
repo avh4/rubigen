@@ -51,6 +51,12 @@ class TestCreateCommands < Test::Unit::TestCase
     assert File.directory?(tmp_file("folderX"))
   end
   
+  def test_symlink_command
+    @command.symlink "Versions/Current/Header.h", "Header.h"
+    assert File.symlink?(tmp_file("Header.h"))
+    assert_equal "Versions/Current/Header.h", File.readlink(tmp_file("Header.h"))
+  end
+  
   private
   def tmp_file(path)
     File.join(TMP_ROOT, path)
