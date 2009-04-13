@@ -39,6 +39,12 @@ class TestCommandsGenerator < Test::Unit::TestCase
     assert File.exist?(tmp_file("file1.txt"))
   end
   
+  def test_file_command_with_symlink
+    @command.file "symlink_to_file1.txt", "symlink_to_file1.txt"
+    assert File.symlink?(tmp_file("symlink_to_file1.txt"))
+    assert_equal "file1.txt", File.readlink(tmp_file("symlink_to_file1.txt"))
+  end
+  
   def test_directory_command
     @command.directory "folderX"
     assert File.exist?(tmp_file("folderX"))

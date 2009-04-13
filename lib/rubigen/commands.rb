@@ -255,12 +255,19 @@ module RubiGen
         # If we're pretending, back off now.
         return if options[:pretend]
 
-        # Write destination file with optional shebang.  Yield for content
-        # if block given so templaters may render the source file.  If a
-        # shebang is requested, replace the existing shebang or insert a
-        # new one.
-        File.open(destination, 'wb') do |dest|
-          dest.write render_file(source, file_options, &block)
+        if File.symlink?(source)
+          # If the source file is a symlink, create the link:
+          link_target = File.readlink(source)
+          FileUtils.ln_s(link_target, destination)
+        else
+          # Otherwise copy the file's contents:
+          # Write destination file with optional shebang.  Yield for content
+          # if block given so templaters may render the source file.  If a
+          # shebang is requested, replace the existing shebang or insert a
+          # new one.
+          File.open(destination, 'wb') do |dest|
+            dest.write render_file(source, file_options, &block)
+          end
         end
 
         # Optionally change permissions.
