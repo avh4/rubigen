@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), "test_helper.rb")
 require 'rubigen/commands'
 
-class TestCommandsGenerator < Test::Unit::TestCase
+class TestCreateCommands < Test::Unit::TestCase
   
   TMP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "..", "tmp"))
   SOURCE_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "files"))
